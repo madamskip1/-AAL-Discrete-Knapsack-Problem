@@ -178,3 +178,60 @@ TEST_CASE("5th - different order of input", "[input_order]")
 		REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
 	}
 }
+
+TEST_CASE("No items", "[no_items]")
+{
+	Knapsack knapsack(10, 2);
+
+	knapsack.calculateKnapsack();
+
+	REQUIRE(knapsack.getResultValue() == 0);
+	REQUIRE(knapsack.getResultKnapsack().empty());
+}
+
+TEST_CASE("Weightless items", "[weightless]")
+{
+	Knapsack knapsack(10, 10);
+	knapsack.addItem(0, 5);
+	knapsack.addItem(0, 1);
+	knapsack.addItem(0, 10);
+	knapsack.addItem(11, 11);
+	knapsack.addItem(5, 10);
+	knapsack.addItem(6, 10);
+	knapsack.addItem(3, 10);
+
+	knapsack.calculateKnapsack();
+
+	std::vector<std::pair<int, int>> expectedKnapsack;
+	expectedKnapsack.push_back(std::make_pair(0, 5));
+	expectedKnapsack.push_back(std::make_pair(0, 1));
+	expectedKnapsack.push_back(std::make_pair(0, 10));
+	expectedKnapsack.push_back(std::make_pair(5, 10));
+	expectedKnapsack.push_back(std::make_pair(3, 10));
+
+	REQUIRE(knapsack.getResultValue() == 36);
+	REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
+}
+
+TEST_CASE("Valueless items", "[valueless]")
+{
+	Knapsack knapsack(10, 10);
+	knapsack.addItem(0, 0);
+	knapsack.addItem(1, 0);
+	knapsack.addItem(2, 0);
+	knapsack.addItem(11, 11);
+	knapsack.addItem(5, 10);
+	knapsack.addItem(6, 10);
+	knapsack.addItem(3, 10);
+
+	knapsack.calculateKnapsack();
+
+	
+
+	std::vector<std::pair<int, int>> expectedKnapsack;
+	expectedKnapsack.push_back(std::make_pair(5, 10));
+	expectedKnapsack.push_back(std::make_pair(3, 10));
+
+	REQUIRE(knapsack.getResultValue() == 20);
+	REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
+}
