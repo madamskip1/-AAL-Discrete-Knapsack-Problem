@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
+
 template<class T, class V>
 inline bool checkIfMapKeyExists(const std::map<T, V>& map, T key)
 {
@@ -26,20 +27,22 @@ public:
 	Knapsack();
 	Knapsack(int capacity, int maxAmountOfEachItem);
 
-	void setAmountOfItems(int amount);
 	void setCapacity(int cap);
 	void setMaxAmountOfEachItem(int maxAmount);
 
-	void calc();
-	void add(int volume, int value);
+	void calculateKnapsack();
+	void addItem(int volume, int value);
+	void clear();
 
 	int getResultValue();
 	std::vector<std::pair<int, int>> getResultKnapsack();
 
 private:
 	int max(int a, int b);
-	int isFirstBiggerThanSecond(int a, int b);
 	void calcResultKnapsack(const std::vector<std::vector<int>>& tempKnapsackValues);
+	bool checkIfCanAddElement(int volume, int value);
+	bool checkIfElementAlreadyExists(int volume, int value);
+	void pushNewItem(int volume, int value);
 };
 
 

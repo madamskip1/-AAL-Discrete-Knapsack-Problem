@@ -10,11 +10,6 @@ Knapsack::Knapsack(int capacity, int maxAmountOfEachItem) : capacity(capacity), 
 {
 }
 
-void Knapsack::setAmountOfItems(int amount)
-{
-	amountOfItems = amount;
-}
-
 void Knapsack::setCapacity(int cap)
 {
 	capacity = cap;
@@ -25,7 +20,7 @@ void Knapsack::setMaxAmountOfEachItem(int maxAmount)
 	maxAmountOfEachItem = maxAmount;
 }
 
-void Knapsack::calc()
+void Knapsack::calculateKnapsack()
 {
 	std::vector<std::vector<int>> tempKnapsackValues(amountOfItems + 1, std::vector<int>(capacity + 1, 0));
 
@@ -53,14 +48,13 @@ void Knapsack::calc()
 
 	resultValue = tempKnapsackValues[amountOfItems][capacity];
 	calcResultKnapsack(tempKnapsackValues);
-	
 }
 
-void Knapsack::add(int volume, int value)
+void Knapsack::addItem(int volume, int value)
 {
-	if (checkIfMapKeyExists(amountOfEachItem, volume) && checkIfMapKeyExists(amountOfEachItem[volume], value))
+	if (checkIfElementAlreadyExists(volume, value))
 	{
-		if (amountOfEachItem[volume][value] >= maxAmountOfEachItem)
+		if (!checkIfCanAddElement(volume, value))
 			return;
 
 		amountOfEachItem[volume][value]++;
@@ -68,9 +62,20 @@ void Knapsack::add(int volume, int value)
 	else
 		amountOfEachItem[volume][value] = 1;
 
-	std::pair<int, int> newItem = std::make_pair(volume, value);
-	items.push_back(newItem);
-	amountOfItems++;
+
+	pushNewItem(volume, value);
+}
+
+void Knapsack::clear()
+{
+	items.clear();
+	amountOfEachItem.clear();
+	resultKnapsack.clear();
+
+	capacity = 0;
+	amountOfItems = 0;
+	maxAmountOfEachItem = 0;
+	resultValue = 0;
 }
 
 int Knapsack::getResultValue()
@@ -109,6 +114,29 @@ void Knapsack::calcResultKnapsack(const std::vector<std::vector<int>>& tempKnaps
 	resultKnapsack = result;
 }
 
+bool Knapsack::checkIfCanAddElement(int volume, int value)
+{
+	if (amountOfEachItem[volume][value] >= maxAmountOfEachItem)
+		return false;
+
+	return true;
+}
+
+bool Knapsack::checkIfElementAlreadyExists(int volume, int value)
+{
+	if (checkIfMapKeyExists(amountOfEachItem, volume) && checkIfMapKeyExists(amountOfEachItem[volume], value))
+		return true;
+
+	return false;
+}
+
+void Knapsack::pushNewItem(int volume, int value)
+{
+	std::pair<int, int> newItem = std::make_pair(volume, value);
+	items.push_back(newItem);
+	amountOfItems++;
+}
+
 int Knapsack::max(int a, int b)
 {
 	if (a > b)
@@ -116,12 +144,3 @@ int Knapsack::max(int a, int b)
 
 	return b;
 }
-
-int Knapsack::isFirstBiggerThanSecond(int a, int b)
-{
-	if (a > b)
-		return true;
-
-	return false;
-}
-
