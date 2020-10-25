@@ -1,0 +1,4 @@
+<<capacity>> <<max amount of each items>>
+<<Volume>> <<Value>
+<<Volume>> <<Value>
+<<Volume>> <<Value>[...]
