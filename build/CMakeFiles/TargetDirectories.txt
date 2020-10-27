@@ -1,5 +1,0 @@
-C:/Users/Adrian/Desktop/-AAL-Discrete-Knapsack-Problem/build/CMakeFiles/RUN_TESTS.dir
-C:/Users/Adrian/Desktop/-AAL-Discrete-Knapsack-Problem/build/CMakeFiles/main.dir
-C:/Users/Adrian/Desktop/-AAL-Discrete-Knapsack-Problem/build/CMakeFiles/KnapsackTest.dir
-C:/Users/Adrian/Desktop/-AAL-Discrete-Knapsack-Problem/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/Adrian/Desktop/-AAL-Discrete-Knapsack-Problem/build/CMakeFiles/ZERO_CHECK.dir
