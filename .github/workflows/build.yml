@@ -1,0 +1,25 @@
+name: Build
+
+on: [push, pull_request]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create build folder
+      run: mkdir build && cd build
+
+    - name: Configure cmake
+      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+    - name: Build
+      run: cmake --build . --config $BUILD_TYPE
+
+    - name: Test
+      run: ctest -C $BUILD_TYPE
