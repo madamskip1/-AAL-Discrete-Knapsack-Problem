@@ -1,89 +1,52 @@
 #include "Knapsack.hpp"
 
-#include <iostream>
-#include <vector>
-
-Knapsack::Knapsack()
-    : capacity(0)
-    , amountOfItems(0)
-    , maxAmountOfEachItem(0)
-    , resultValue(0)
-{
-}
-
-Knapsack::Knapsack(int capacity, int maxAmountOfEachItem)
+Knapsack::Knapsack(int capacity, int maxDuplicates)
     : capacity(capacity)
-    , maxAmountOfEachItem(maxAmountOfEachItem)
-    , amountOfItems(0)
+    , maxDuplicates(maxDuplicates)
     , resultValue(0)
+    , numItems(0)
 {
-}
-
-void Knapsack::setCapacity(int cap)
-{
-    capacity = cap;
-}
-
-void Knapsack::setMaxAmountOfEachItem(int maxAmount)
-{
-    maxAmountOfEachItem = maxAmount;
 }
 
 void Knapsack::calculateKnapsack()
 {
-    std::vector<std::vector<int>> tempKnapsackValues(amountOfItems + 1, std::vector<int>(capacity + 1, 0));
+    std::vector<std::vector<int>> temp(numItems + 1, std::vector<int>(capacity + 1, 0));
 
-    int itemVolume;
-    int itemValue;
-    int previousItemIndex;
-
-    for (int i = 1; i <= amountOfItems; i++)
+    for (int i = 1; i <= numItems; ++i)
     {
-        for (int j = 1; j <= capacity; j++)
+        for (int j = 1; j <= capacity; ++j)
         {
-            previousItemIndex = i - 1;
-
-            itemVolume = items[previousItemIndex].first;
-            itemValue = items[previousItemIndex].second;
-
-            if (itemVolume > j)
-                tempKnapsackValues[i][j] = tempKnapsackValues[previousItemIndex][j];
+            if (items[i - 1].volume > j)
+            {
+                temp[i][j] = temp[i - 1][j];
+            }
             else
             {
-                tempKnapsackValues[i][j] = max(tempKnapsackValues[previousItemIndex][j], tempKnapsackValues[previousItemIndex][j - itemVolume] + itemValue);
+                temp[i][j] = std::max(temp[i - 1][j], temp[i - 1][j - items[i - 1].volume] + items[i - 1].value);
             }
         }
     }
 
-    resultValue = tempKnapsackValues[amountOfItems][capacity];
-    calcResultKnapsack(tempKnapsackValues);
+    resultValue = temp[numItems][capacity];
+    calcResultKnapsack(temp);
 }
 
 void Knapsack::addItem(int volume, int value)
 {
-    if (checkIfElementAlreadyExists(volume, value))
-    {
-        if (!checkIfCanAddElement(volume, value))
-            return;
+    Item item = {value, volume};
 
-        amountOfEachItem[volume][value]++;
+    auto it = itemCount.find(item);
+    if (it == itemCount.end())
+    {
+        itemCount[item] = 1;
     }
     else
-        amountOfEachItem[volume][value] = 1;
+    {
+        it->second = std::min(it->second, maxDuplicates);
+    }
 
-    pushNewItem(volume, value);
-}
-
-void Knapsack::clear()
-{
-    items.clear();
-    amountOfEachItem.clear();
-    resultKnapsack.clear();
-
-    capacity = 0;
-    amountOfItems = 0;
-    maxAmountOfEachItem = 0;
-    resultValue = 0;
+    items.push_back(item);
+    ++numItems;
 }
 
 int Knapsack::getResultValue()
@@ -91,55 +54,30 @@ int Knapsack::getResultValue()
     return resultValue;
 }
 
-std::vector<std::pair<int, int>> Knapsack::getResultKnapsack()
+std::vector<Item> Knapsack::getResultKnapsack()
 {
     return resultKnapsack;
 }
 
-void Knapsack::calcResultKnapsack(const std::vector<std::vector<int>> &tempKnapsackValues)
+void Knapsack::calcResultKnapsack(const std::vector<std::vector<int>> &temp)
 {
-    std::vector<std::pair<int, int>> result;
-    int remainedValue = resultValue;
-    int remainedCapacity = capacity;
-    int itemIndex = amountOfItems;
-    int previousItemIndex;
-    std::pair<int, int> currentItem;
+    std::vector<Item> result;
 
-    while (itemIndex >= 0 && remainedValue > 0)
+    int i = numItems;
+    int currentValue = resultValue;
+    int currentCapacity = capacity;
+
+    while (i >= 0 && currentValue > 0)
     {
-        previousItemIndex = itemIndex - 1;
-        if (remainedValue != tempKnapsackValues[previousItemIndex][remainedCapacity])
+        if (currentValue != temp[i - 1][currentCapacity])
         {
-            currentItem = items[previousItemIndex];
-            remainedCapacity -= currentItem.first;
-            remainedValue -= currentItem.second;
-            result.push_back(currentItem);
+            currentValue -= items[i - 1].value;
+            currentCapacity -= items[i - 1].volume;
+            result.push_back(items[i - 1]);
         }
 
-        itemIndex--;
+        --i;
     }
 
     resultKnapsack = result;
-}
-
-bool Knapsack::checkIfCanAddElement(int volume, int value)
-{
-    return amountOfEachItem[volume][value] < maxAmountOfEachItem;
-}
-
-bool Knapsack::checkIfElementAlreadyExists(int volume, int value)
-{
-    return checkIfMapKeyExists(amountOfEachItem, volume) && checkIfMapKeyExists(amountOfEachItem[volume], value);
-}
-
-void Knapsack::pushNewItem(int volume, int value)
-{
-    std::pair<int, int> newItem = std::make_pair(volume, value);
-    items.push_back(newItem);
-    amountOfItems++;
-}
-
-int Knapsack::max(int a, int b)
-{
-    return a > b ? a : b;
 }

@@ -1,32 +1,30 @@
 #include <iostream>
 #include <vector>
 
-#include "FileStreamRunMode.hpp"
 #include "Knapsack.hpp"
 
-void m1Mode(int argc, char *argv[])
+void m1Mode()
 {
-    std::cout << "Wybrano tryb uruchomienia M1 - Input/Output - pliki." << std::endl;
+    int numItems, capacity, maxDuplicates;
+    std::cin >> numItems >> capacity >> maxDuplicates;
 
-    if (argc < 4)
+    Knapsack knapsack(capacity, maxDuplicates);
+
+    for (int i = 0; i < numItems; ++i)
     {
-        std::cout << "Podano za mala liczbe parametrow dla tego trybu." << std::endl;
-        std::cout << "Wymagane dwa parametry:" << std::endl << "* nazwa pliku z danymi wejsciowymi" << std::endl << "* nazwa pliku wynikowego" << std::endl;
+        int volume, value;
+        std::cin >> volume >> value;
 
-        return;
+        knapsack.addItem(volume, value);
     }
 
-    std::string inFileName = argv[2];
-    std::string outFileName = argv[3];
+    // TODO: choose which algorithm to use (optimal or naive)
+    knapsack.calculateKnapsack();
 
-    std::cout << "Nazwa pliku z danymi wejsciowymi: " << inFileName << std::endl;
-    std::cout << "Nazwa pliku wynikowego: " << outFileName << std::endl;
-
-    FileStreamRunMode runMode("in.txt", "out.txt");
-    runMode.run();
+    std::cout << knapsack.getResultValue() << std::endl;
 }
 
-void m2Mode(int argc, char *argv[])
+void m2Mode()
 {
     // TODO
 }
@@ -41,11 +39,11 @@ int main(int argc, char *argv[])
 
     if (argv[1] == std::string("-m1"))
     {
-        m1Mode(argc, argv);
+        m1Mode();
     }
     else if (argv[1] == std::string("-m2"))
     {
-        m2Mode(argc, argv);
+        m2Mode();
     }
     else
     {
