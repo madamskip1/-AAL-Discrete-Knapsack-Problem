@@ -25,5 +25,10 @@ add_executable(main src/main.cpp ${SOURCE_FILES})
 
 enable_testing()
 
-add_executable(KnapsackTest test/KnapsackTest.cpp ${SOURCE_FILES})
-add_test(NAME KnapsackTest COMMAND KnapsackTest)
+macro(add_unit_test testname)
+    add_executable(${testname} test/${testname}.cpp ${SOURCE_FILES})
+    add_test(NAME ${testname} COMMAND ${testname})
+endmacro(add_unit_test)
+
+add_unit_test(KnapsackTest)
+add_unit_test(ItemTest)
