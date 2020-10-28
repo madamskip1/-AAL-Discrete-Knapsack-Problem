@@ -15,19 +15,14 @@ class Knapsack
     std::vector<Item> items;
     std::map<Item, int> itemCount;
 
-    std::vector<Item> resultKnapsack;
-    int resultValue;
+    std::vector<std::vector<int>> temp;
 
 public:
-    Knapsack();
     Knapsack(int capacity, int maxDuplicates);
 
-    void calculateKnapsack();
     void addItem(int volume, int value);
+    void calculateKnapsack();
 
     int getResultValue();
     std::vector<Item> getResultKnapsack();
-
-private:
-    void calcResultKnapsack(const std::vector<std::vector<int>> &tempKnapsackValues);
 };

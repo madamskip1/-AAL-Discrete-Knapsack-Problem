@@ -4,14 +4,34 @@ Knapsack::Knapsack(int capacity, int maxDuplicates)
     : capacity(capacity)
     , maxDuplicates(maxDuplicates)
     , numItems(0)
-    , resultValue(0)
+    , temp(numItems + 1, std::vector<int>(capacity + 1, 0))
 {
+}
+
+void Knapsack::addItem(int volume, int value)
+{
+    Item item = {volume, value};
+    auto it = itemCount.find(item);
+
+    if (it == itemCount.end())
+    {
+        itemCount[item] = 1;
+    }
+    else if (it->second < maxDuplicates)
+    {
+        ++it->second;
+    }
+    else
+    {
+        return;
+    }
+
+    items.push_back(item);
+    ++numItems;
 }
 
 void Knapsack::calculateKnapsack()
 {
-    std::vector<std::vector<int>> temp(numItems + 1, std::vector<int>(capacity + 1, 0));
-
     for (int i = 1; i <= numItems; ++i)
     {
         for (int j = 1; j <= capacity; ++j)
@@ -26,52 +46,19 @@ void Knapsack::calculateKnapsack()
             }
         }
     }
-
-    resultValue = temp[numItems][capacity];
-    calcResultKnapsack(temp);
-}
-
-void Knapsack::addItem(int volume, int value)
-{
-    Item item = {volume, value};
-
-    auto it = itemCount.find(item);
-    if (it == itemCount.end())
-    {
-        itemCount[item] = 1;
-    }
-    else
-    {
-        if (it->second < maxDuplicates)
-        {
-            ++it->second;
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    items.push_back(item);
-    ++numItems;
 }
 
 int Knapsack::getResultValue()
 {
-    return resultValue;
+    return temp[numItems][capacity];
 }
 
 std::vector<Item> Knapsack::getResultKnapsack()
 {
-    return resultKnapsack;
-}
-
-void Knapsack::calcResultKnapsack(const std::vector<std::vector<int>> &temp)
-{
     std::vector<Item> result;
 
     int i = numItems;
-    int currentValue = resultValue;
+    int currentValue = getResultValue();
     int currentCapacity = capacity;
 
     while (i >= 0 && currentValue > 0)
@@ -86,5 +73,5 @@ void Knapsack::calcResultKnapsack(const std::vector<std::vector<int>> &temp)
         --i;
     }
 
-    resultKnapsack = result;
+    return result;
 }
