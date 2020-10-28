@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "Item.hpp"
 #include "Knapsack.hpp"
 #include "catch.hpp"
 
@@ -31,38 +32,39 @@ TEST_CASE("1st Knapsack - maxAmountOfEachItem", "[max_amount]")
     knapsack.addItem(5, 18);
     knapsack.addItem(6, 22);
     knapsack.addItem(7, 24);
+
     knapsack.calculateKnapsack();
 
-    std::vector<std::pair<int, int>> expectedKnapsack;
+    std::vector<Item> expectedKnapsack;
 
     REQUIRE(knapsack.getResultValue() == 123);
 
     SECTION("ExpectedKnapsack1")
     {
-        expectedKnapsack.push_back(std::make_pair(3, 10));
-        expectedKnapsack.push_back(std::make_pair(2, 50));
-        expectedKnapsack.push_back(std::make_pair(2, 50));
-        expectedKnapsack.push_back(std::make_pair(2, 13));
+        expectedKnapsack.push_back(Item {3, 10});
+        expectedKnapsack.push_back(Item {2, 50});
+        expectedKnapsack.push_back(Item {2, 50});
+        expectedKnapsack.push_back(Item {2, 13});
 
         REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
     }
 
     SECTION("ExpectedKnapsack2")
     {
-        expectedKnapsack.push_back(std::make_pair(2, 50));
-        expectedKnapsack.push_back(std::make_pair(3, 10));
-        expectedKnapsack.push_back(std::make_pair(2, 50));
-        expectedKnapsack.push_back(std::make_pair(2, 13));
+        expectedKnapsack.push_back(Item {2, 50});
+        expectedKnapsack.push_back(Item {3, 10});
+        expectedKnapsack.push_back(Item {2, 50});
+        expectedKnapsack.push_back(Item {2, 13});
 
         REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
     }
 
     SECTION("ExpectedKnapsack3")
     {
-        expectedKnapsack.push_back(std::make_pair(2, 50));
-        expectedKnapsack.push_back(std::make_pair(2, 13));
-        expectedKnapsack.push_back(std::make_pair(3, 10));
-        expectedKnapsack.push_back(std::make_pair(2, 50));
+        expectedKnapsack.push_back(Item {2, 50});
+        expectedKnapsack.push_back(Item {2, 13});
+        expectedKnapsack.push_back(Item {3, 10});
+        expectedKnapsack.push_back(Item {2, 50});
 
         REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
     }
@@ -80,11 +82,11 @@ TEST_CASE("2nd Knapsack - not full", "[not_full]")
 
     knapsack.calculateKnapsack();
 
-    std::vector<std::pair<int, int>> expectedKnapsack;
+    std::vector<Item> expectedKnapsack;
 
     REQUIRE(knapsack.getResultValue() == 300);
 
-    expectedKnapsack.push_back(std::make_pair(9, 300));
+    expectedKnapsack.push_back(Item {9, 300});
 
     REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
 }
@@ -101,7 +103,7 @@ TEST_CASE("3nd Knapsack - all items heavier then capacity", "[heavier]")
 
     knapsack.calculateKnapsack();
 
-    std::vector<std::pair<int, int>> expectedKnapsack;
+    std::vector<Item> expectedKnapsack;
 
     REQUIRE(knapsack.getResultValue() == 0);
     REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
@@ -131,10 +133,10 @@ TEST_CASE("5th - different order of input", "[input_order]")
     // [{2, 13}, {3, 10}, {5, 18}, {6, 22}, {7, 24}] => 45
 
     Knapsack knapsack(11, 4);
-    std::vector<std::pair<int, int>> expectedKnapsack;
-    expectedKnapsack.push_back(std::make_pair(2, 13));
-    expectedKnapsack.push_back(std::make_pair(3, 10));
-    expectedKnapsack.push_back(std::make_pair(6, 22));
+    std::vector<Item> expectedKnapsack;
+    expectedKnapsack.push_back(Item {2, 13});
+    expectedKnapsack.push_back(Item {3, 10});
+    expectedKnapsack.push_back(Item {6, 22});
 
     SECTION("First order")
     {
@@ -201,12 +203,12 @@ TEST_CASE("Weightless items", "[weightless]")
 
     knapsack.calculateKnapsack();
 
-    std::vector<std::pair<int, int>> expectedKnapsack;
-    expectedKnapsack.push_back(std::make_pair(0, 5));
-    expectedKnapsack.push_back(std::make_pair(0, 1));
-    expectedKnapsack.push_back(std::make_pair(0, 10));
-    expectedKnapsack.push_back(std::make_pair(5, 10));
-    expectedKnapsack.push_back(std::make_pair(3, 10));
+    std::vector<Item> expectedKnapsack;
+    expectedKnapsack.push_back(Item {0, 5});
+    expectedKnapsack.push_back(Item {0, 1});
+    expectedKnapsack.push_back(Item {0, 10});
+    expectedKnapsack.push_back(Item {5, 10});
+    expectedKnapsack.push_back(Item {3, 10});
 
     REQUIRE(knapsack.getResultValue() == 36);
     REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
@@ -225,9 +227,9 @@ TEST_CASE("Valueless items", "[valueless]")
 
     knapsack.calculateKnapsack();
 
-    std::vector<std::pair<int, int>> expectedKnapsack;
-    expectedKnapsack.push_back(std::make_pair(5, 10));
-    expectedKnapsack.push_back(std::make_pair(3, 10));
+    std::vector<Item> expectedKnapsack;
+    expectedKnapsack.push_back(Item {5, 10});
+    expectedKnapsack.push_back(Item {3, 10});
 
     REQUIRE(knapsack.getResultValue() == 20);
     REQUIRE(compareVectors(expectedKnapsack, knapsack.getResultKnapsack()));
