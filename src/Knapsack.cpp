@@ -4,7 +4,6 @@ Knapsack::Knapsack(int capacity, int maxDuplicates)
     : capacity(capacity)
     , maxDuplicates(maxDuplicates)
     , numItems(0)
-    , temp(numItems + 1, std::vector<int>(capacity + 1, 0))
 {
 }
 
@@ -32,6 +31,8 @@ void Knapsack::addItem(int volume, int value)
 
 void Knapsack::calculateKnapsack()
 {
+    temp = std::vector(numItems + 1, std::vector<int>(capacity + 1, 0));
+
     for (int i = 1; i <= numItems; ++i)
     {
         for (int j = 1; j <= capacity; ++j)
