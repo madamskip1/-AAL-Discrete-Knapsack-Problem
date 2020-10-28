@@ -3,8 +3,8 @@
 Knapsack::Knapsack(int capacity, int maxDuplicates)
     : capacity(capacity)
     , maxDuplicates(maxDuplicates)
-    , resultValue(0)
     , numItems(0)
+    , resultValue(0)
 {
 }
 
@@ -33,7 +33,7 @@ void Knapsack::calculateKnapsack()
 
 void Knapsack::addItem(int volume, int value)
 {
-    Item item = {value, volume};
+    Item item = {volume, value};
 
     auto it = itemCount.find(item);
     if (it == itemCount.end())
@@ -42,7 +42,14 @@ void Knapsack::addItem(int volume, int value)
     }
     else
     {
-        it->second = std::min(it->second, maxDuplicates);
+        if (it->second < maxDuplicates)
+        {
+            ++it->second;
+        }
+        else
+        {
+            return;
+        }
     }
 
     items.push_back(item);

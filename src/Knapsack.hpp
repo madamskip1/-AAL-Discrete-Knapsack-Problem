@@ -16,7 +16,6 @@ class Knapsack
     std::map<Item, int> itemCount;
 
     std::vector<Item> resultKnapsack;
-
     int resultValue;
 
 public:
