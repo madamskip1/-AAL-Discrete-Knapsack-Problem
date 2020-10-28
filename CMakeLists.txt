@@ -14,8 +14,6 @@ endif()
 
 set(SOURCE_FILES
     src/Knapsack.cpp
-    src/RunMode.cpp
-    src/FileStreamRunMode.cpp
 )
 
 include_directories(

@@ -1,45 +1,34 @@
 #pragma once
 
+#include <algorithm>
 #include <map>
 #include <vector>
 
-template <class T, class V>
-inline bool checkIfMapKeyExists(const std::map<T, V> &map, T key)
-{
-    return map.find(key) != map.end();
-}
+#include "Item.hpp"
 
 class Knapsack
 {
     int capacity;
-    int amountOfItems;
-    int maxAmountOfEachItem;
+    int maxDuplicates;
+    int numItems;
 
-    std::vector<std::pair<int, int>> items;
-    std::map<int, std::map<int, int>> amountOfEachItem;
+    std::vector<Item> items;
+    std::map<Item, int> itemCount;
 
-    std::vector<std::pair<int, int>> resultKnapsack;
+    std::vector<Item> resultKnapsack;
+
     int resultValue;
 
 public:
     Knapsack();
-    Knapsack(int capacity, int maxAmountOfEachItem);
-
-    void setCapacity(int cap);
-    void setMaxAmountOfEachItem(int maxAmount);
+    Knapsack(int capacity, int maxDuplicates);
 
     void calculateKnapsack();
     void addItem(int volume, int value);
-    void clear();
 
     int getResultValue();
-    std::vector<std::pair<int, int>> getResultKnapsack();
+    std::vector<Item> getResultKnapsack();
 
 private:
-    int max(int a, int b);
     void calcResultKnapsack(const std::vector<std::vector<int>> &tempKnapsackValues);
-    bool checkIfCanAddElement(int volume, int value);
-    bool checkIfElementAlreadyExists(int volume, int value);
-    void pushNewItem(int volume, int value);
 };
-
