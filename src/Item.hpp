@@ -14,4 +14,9 @@ struct Item
     {
         return this->volume == x.volume ? this->value < x.value : this->volume < x.volume;
     }
+
+    bool operator>(Item const &x) const
+    {
+        return this->volume == x.volume ? this->value > x.value : this->volume > x.volume;
+    }
 };
