@@ -4,6 +4,7 @@ Knapsack::Knapsack(int capacity, int maxDuplicates)
     : capacity(capacity)
     , maxDuplicates(maxDuplicates)
     , numItems(0)
+    , resultValue(0)
 {
 }
 
@@ -31,7 +32,7 @@ void Knapsack::addItem(int volume, int value)
 
 void Knapsack::calculateKnapsack()
 {
-    temp = std::vector(numItems + 1, std::vector<int>(capacity + 1, 0));
+    std::vector<std::vector<int>> temp = std::vector(numItems + 1, std::vector<int>(capacity + 1, 0));
 
     for (int i = 1; i <= numItems; ++i)
     {
@@ -47,16 +48,19 @@ void Knapsack::calculateKnapsack()
             }
         }
     }
+
+    generateResultValue(temp);
+    generateResultKnapsack(temp);
 }
 
-int Knapsack::getResultValue()
+void Knapsack::generateResultValue(const std::vector<std::vector<int>> &temp)
 {
-    return temp[numItems][capacity];
+    resultValue = temp[numItems][capacity];
 }
 
-std::vector<Item> Knapsack::getResultKnapsack()
+void Knapsack::generateResultKnapsack(const std::vector<std::vector<int>> &temp)
 {
-    std::vector<Item> result;
+    resultKnapsack.clear();
 
     int i = numItems;
     int currentValue = getResultValue();
@@ -68,11 +72,19 @@ std::vector<Item> Knapsack::getResultKnapsack()
         {
             currentValue -= items[i - 1].value;
             currentCapacity -= items[i - 1].volume;
-            result.push_back(items[i - 1]);
+            resultKnapsack.push_back(items[i - 1]);
         }
 
         --i;
     }
+}
 
-    return result;
+int Knapsack::getResultValue()
+{
+    return resultValue;
+}
+
+std::vector<Item> Knapsack::getResultKnapsack()
+{
+    return resultKnapsack;
 }

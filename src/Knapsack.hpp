@@ -15,7 +15,11 @@ class Knapsack
     std::vector<Item> items;
     std::map<Item, int> itemCount;
 
-    std::vector<std::vector<int>> temp;
+    int resultValue;
+    std::vector<Item> resultKnapsack;
+
+    void generateResultValue(const std::vector<std::vector<int>> &temp);
+    void generateResultKnapsack(const std::vector<std::vector<int>> &temp);
 
 public:
     Knapsack(int capacity, int maxDuplicates);
