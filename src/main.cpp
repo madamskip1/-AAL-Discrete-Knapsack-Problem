@@ -22,6 +22,11 @@ void m1Mode()
     knapsack.calculateKnapsack();
 
     std::cout << knapsack.getResultValue() << std::endl;
+
+    for (Item &item : knapsack.getResultKnapsack())
+    {
+        std::cout << item << std::endl;
+    }
 }
 
 void m2Mode()
