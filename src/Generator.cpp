@@ -36,7 +36,6 @@ void Generator::setCapacity(int capacity)
 
 std::vector<Item> Generator::generate()
 {
-    int max_value;
     std::vector<Item> items;
     int volume, value;
     std::random_device randomDevice;
