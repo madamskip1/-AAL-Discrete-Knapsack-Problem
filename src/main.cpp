@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "Knapsack.hpp"
-
+#include "Generator.hpp"
 void m1Mode()
 {
     int numItems, capacity, maxDuplicates;
@@ -31,11 +31,49 @@ void m1Mode()
 
 void m2Mode()
 {
-    // TODO
+    int numItems;
+    int capacity;
+    int maxDuplicates;
+    float binominalParameter;
+
+
+    // 0 jeœli domyœlna/wyliczana wartoœæ
+    // numItems obowi¹zkowy parametr;
+    std::cin >> numItems >> binominalParameter >> capacity >> maxDuplicates;
+
+    if (numItems <= 0)
+        return;
+
+    std::cout << numItems << std::endl;
+
+    Generator gen(numItems);
+
+    if (binominalParameter > 0)
+        gen.setBinominalParameter(binominalParameter);
+    if (capacity > 0)
+        gen.setCapacity(capacity);
+    if (maxDuplicates > 0)
+        gen.setMaxDuplicates(maxDuplicates);
+
+
+
+    std::vector<Item> items = gen.generate();
+
+    Knapsack knap(gen.getCapacity(), gen.getMaxDuplciates());
+    knap.fromVector(items);
+    knap.calculateKnapsack();
+
+    std::cout << knap.getResultValue() << std::endl;
+
+    for (Item &item : knap.getResultKnapsack())
+    {
+        std::cout << item << std::endl;
+    }
 }
 
 int main(int argc, char *argv[])
 {
+    
     if (argc < 2)
     {
         std::cout << "Nie wybrano trybu uruchomienia." << std::endl;
@@ -55,6 +93,6 @@ int main(int argc, char *argv[])
         std::cout << "Wybrano nieistniejacy tryb uruchomienia." << std::endl;
         return 1;
     }
-
+    
     return 0;
 }

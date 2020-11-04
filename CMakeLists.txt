@@ -14,6 +14,7 @@ endif()
 
 set(SOURCE_FILES
     src/Knapsack.cpp
+    src/Generator.cpp
 )
 
 include_directories(

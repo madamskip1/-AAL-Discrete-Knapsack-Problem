@@ -20,11 +20,11 @@ class Knapsack
 
     void generateResultValue(const std::vector<std::vector<int>> &temp);
     void generateResultKnapsack(const std::vector<std::vector<int>> &temp);
-
 public:
     Knapsack(int capacity, int maxDuplicates);
 
     void addItem(int volume, int value);
+    void fromVector(const std::vector<Item> &vec);
     void calculateKnapsack();
 
     int getResultValue();

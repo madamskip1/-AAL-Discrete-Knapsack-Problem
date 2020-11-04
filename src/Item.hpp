@@ -7,6 +7,13 @@ struct Item
     int volume;
     int value;
 
+    Item(int volume_, int value_)
+        : volume(volume_)
+        , value(value_) {};
+    Item()
+        : volume(0)
+        , value(0) {};
+
     bool operator==(Item const &x) const
     {
         return this->volume == x.volume && this->value == x.value;

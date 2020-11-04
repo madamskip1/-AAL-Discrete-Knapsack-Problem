@@ -1,4 +1,5 @@
 #include "Knapsack.hpp"
+#include <iostream>
 
 Knapsack::Knapsack(int capacity, int maxDuplicates)
     : capacity(capacity)
@@ -28,6 +29,17 @@ void Knapsack::addItem(int volume, int value)
 
     items.push_back(item);
     ++numItems;
+}
+
+void Knapsack::fromVector(const std::vector<Item> &vec)
+{
+    int items = vec.size();
+    for (int i = 0; i < items; i++)
+    {
+        addItem(vec[i].volume, vec[i].value);
+    }
+
+    std::cout << "From vector done" << std::endl;
 }
 
 void Knapsack::calculateKnapsack()
