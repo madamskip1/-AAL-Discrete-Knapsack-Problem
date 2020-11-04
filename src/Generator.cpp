@@ -6,7 +6,7 @@ Generator::Generator(int numItems)
 {
     binominalParameter = Generator::DEFAULT_BINOMINAL_PARAMETER;
     calcCapacity();
-    calcMaxNumberOfItem();
+    calcMaxDuplicates();
 }
 
 int Generator::getCapacity()
@@ -44,9 +44,7 @@ std::vector<Item> Generator::generate()
 
     // Rozk³ad normalny wagi przedmiotów, domyœlnie 10% maksymalnej pojemnoœci
     std::binomial_distribution<> volumeDistribution(capacity, binominalParameter);
-
-    // Rozk³ad normalny dla wartoœci przedmiotów - œrednia wartoœæ ka¿dego 50
-    std::binomial_distribution<> valueDistribution(100, 0.5);
+    std::binomial_distribution<> valueDistribution(itemMaxValue, binominalParameterValueDistr);
 
     for (int i = 0; i < numItems; i++)
     {
@@ -59,12 +57,11 @@ std::vector<Item> Generator::generate()
     return items;
 }
 
-void Generator::calcMaxNumberOfItem()
+void Generator::calcMaxDuplicates()
 {
     std::random_device randomDevice;
     std::mt19937 gen(randomDevice());
-    // Parametr 0.02 w rozk³adzi sprawi, ¿e maksymalna iloœæ poszczególnych przedmiotów bêdzie na poziomie 2% wszystkich
-    std::binomial_distribution<> maxNumberDistribution(numItems, 0.02);
+    std::binomial_distribution<> maxNumberDistribution(numItems, binominalParameterMaxDuplicates);
 
     maxDuplicates = maxNumberDistribution(gen);
 }
