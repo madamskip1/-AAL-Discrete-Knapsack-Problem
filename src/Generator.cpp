@@ -24,11 +24,6 @@ void Generator::setBinominalParameter(float binominal)
     binominalParameter = binominal;
 }
 
-void Generator::setMaxDuplicates(int maxNumber)
-{
-    maxDuplicates = maxNumber;
-}
-
 void Generator::setCapacity(int capacity)
 {
     this->capacity = capacity;
@@ -70,9 +65,8 @@ void Generator::calcCapacity()
     std::random_device randomDevice;
     std::mt19937 gen(randomDevice());
 
-    int maxCapacity = numItems * 10;
-    // Parametr 0.5 rozk³adu sprawi, ¿e pojemnoœæ bêdzie œrednio 5 razy wiêksza ni¿ iloœæ przedmiotów
-    std::binomial_distribution<> capacityDistribution(maxCapacity, 0.5);
+    // Parametr 0.5 rozk³adu sprawi, ¿e pojemnoœæ bêdzie œrednio 2 razy wiêksza ni¿ iloœæ przedmiotów
+    std::binomial_distribution<> capacityDistribution(numItems, 0.5);
 
     capacity = capacityDistribution(gen);
 }

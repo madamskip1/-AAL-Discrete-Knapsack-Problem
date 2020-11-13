@@ -38,8 +38,6 @@ void Knapsack::fromVector(const std::vector<Item> &vec)
     {
         addItem(vec[i].volume, vec[i].value);
     }
-
-    std::cout << "From vector done" << std::endl;
 }
 
 void Knapsack::calculateKnapsack()

@@ -3,6 +3,8 @@
 
 #include "Knapsack.hpp"
 #include "Generator.hpp"
+#include "Benchmark.hpp"
+
 void m1Mode()
 {
     int numItems, capacity, maxDuplicates;
@@ -44,22 +46,22 @@ void m2Mode()
     if (numItems <= 0)
         return;
 
-    std::cout << numItems << std::endl;
-
     Generator gen(numItems);
 
     if (binominalParameter > 0)
         gen.setBinominalParameter(binominalParameter);
+
     if (capacity > 0)
         gen.setCapacity(capacity);
-    if (maxDuplicates > 0)
-        gen.setMaxDuplicates(maxDuplicates);
+
+    if (maxDuplicates == 0)
+        maxDuplicates = gen.getMaxDuplciates();
 
 
 
     std::vector<Item> items = gen.generate();
 
-    Knapsack knap(gen.getCapacity(), gen.getMaxDuplciates());
+    Knapsack knap(gen.getCapacity(), maxDuplicates);
     knap.fromVector(items);
     knap.calculateKnapsack();
 
@@ -69,6 +71,19 @@ void m2Mode()
     {
         std::cout << item << std::endl;
     }
+}
+
+void m3Mode()
+{
+    Benchmark benchmark;
+    benchmark.setNumProblems(10);
+    benchmark.setStep(1000);
+    benchmark.setNumInstances(10);
+    benchmark.setStartNumItems(1000);
+    benchmark.setCapacity(10000);
+    benchmark.setMaxDuplicates(100000);
+
+    benchmark.run();
 }
 
 int main(int argc, char *argv[])
@@ -88,11 +103,16 @@ int main(int argc, char *argv[])
     {
         m2Mode();
     }
+    else if (argv[1] == std::string("-m3"))
+    {
+        m3Mode();
+    }
     else
     {
         std::cout << "Wybrano nieistniejacy tryb uruchomienia." << std::endl;
         return 1;
     }
     
+
     return 0;
 }
