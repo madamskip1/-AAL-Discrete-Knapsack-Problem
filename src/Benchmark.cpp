@@ -8,12 +8,12 @@ const int Benchmark::DEFAULT_STEP = 1000;
 const int Benchmark::DEFAULT_NUM_PROBLEMS= 20; 
 
 Benchmark::Benchmark()
-    : numInstances(Benchmark::DEFAULT_NUM_INSTANCES)
+    : numProblems(Benchmark::DEFAULT_NUM_PROBLEMS)
+    , numInstances(Benchmark::DEFAULT_NUM_INSTANCES)
     , step(Benchmark::DEFAULT_STEP)
-    , numProblems(Benchmark::DEFAULT_NUM_PROBLEMS) 
 {
     capacity = numItems = maxDuplicates = startNumItems = 0;
-};
+}
 
 void Benchmark::runInstance()
 {
