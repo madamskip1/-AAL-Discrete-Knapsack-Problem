@@ -1,11 +1,13 @@
 #include "Benchmark.hpp"
+
+#include <chrono>
+
 #include "Generator.hpp"
 #include "Knapsack.hpp"
-#include <chrono>
 
 const int Benchmark::DEFAULT_NUM_INSTANCES = 10;
 const int Benchmark::DEFAULT_STEP = 1000;
-const int Benchmark::DEFAULT_NUM_PROBLEMS= 20; 
+const int Benchmark::DEFAULT_NUM_PROBLEMS = 20;
 
 Benchmark::Benchmark()
     : numProblems(Benchmark::DEFAULT_NUM_PROBLEMS)
@@ -15,11 +17,10 @@ Benchmark::Benchmark()
     capacity = numItems = maxDuplicates = startNumItems = 0;
 }
 
-void Benchmark::runInstance()
+void Benchmark::runInstance(bool naive)
 {
     Generator gen(numItems);
     gen.setCapacity(capacity);
-    
 
     std::vector<Item> items = gen.generate();
 
@@ -30,9 +31,9 @@ void Benchmark::runInstance()
     std::chrono::duration<double> elapsed;
 
     start = std::chrono::high_resolution_clock::now();
-    knap.calculateKnapsack();
+    knap.calculateKnapsack(naive);
     end = std::chrono::high_resolution_clock::now();
-    
+
     elapsed = end - start;
     times.push_back(elapsed);
 }
@@ -49,11 +50,11 @@ void Benchmark::printProblem()
     double sumTime = 0;
     double avgTime;
 
-    for (;timeIterator != times.cend(); timeIterator++)
+    for (; timeIterator != times.cend(); timeIterator++)
     {
         sumTime += (*timeIterator).count();
     }
-   
+
     avgTime = sumTime / numInstances;
 
     std::cout << "Czas wykonywania problemu: " << sumTime << "s. Sredni czas instancji: " << avgTime << "s" << std::endl;
@@ -89,7 +90,7 @@ void Benchmark::setMaxDuplicates(int max)
     maxDuplicates = max;
 }
 
-void Benchmark::run()
+void Benchmark::run(bool naive)
 {
     if (capacity == 0 || startNumItems == 0 || maxDuplicates == 0)
     {
@@ -100,11 +101,11 @@ void Benchmark::run()
     for (int problem = 0; problem < numProblems; problem++)
     {
         numItems = startNumItems + problem * step;
-        std::cout << "Nowy problem. Ilosc przedmiotow: " << numItems << std::endl;  
+        std::cout << "Nowy problem. Ilosc przedmiotow: " << numItems << std::endl;
 
         for (int instance = 0; instance < numInstances; instance++)
         {
-            runInstance();
+            runInstance(naive);
             printInstance();
         }
 

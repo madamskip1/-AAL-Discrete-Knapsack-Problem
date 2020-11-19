@@ -1,11 +1,11 @@
 #include <iostream>
 #include <vector>
 
-#include "Knapsack.hpp"
-#include "Generator.hpp"
 #include "Benchmark.hpp"
+#include "Generator.hpp"
+#include "Knapsack.hpp"
 
-void m1Mode()
+void m1Mode(bool naive)
 {
     int numItems, capacity, maxDuplicates;
     std::cin >> numItems >> capacity >> maxDuplicates;
@@ -21,7 +21,7 @@ void m1Mode()
     }
 
     // TODO: choose which algorithm to use (optimal or naive)
-    knapsack.calculateKnapsack();
+    knapsack.calculateKnapsack(naive);
 
     std::cout << knapsack.getResultValue() << std::endl;
 
@@ -31,49 +31,49 @@ void m1Mode()
     }
 }
 
-void m2Mode()
+void m2Mode(bool naive)
 {
-    int numItems;
-    int capacity;
-    int maxDuplicates;
+    int numItems, capacity, maxDuplicates;
     float binominalParameter;
-
-
-    // 0 jeœli domyœlna/wyliczana wartoœæ
-    // numItems obowi¹zkowy parametr;
-    std::cin >> numItems >> binominalParameter >> capacity >> maxDuplicates;
+    std::cin >> numItems >> capacity >> maxDuplicates >> binominalParameter;
 
     if (numItems <= 0)
+    {
         return;
+    }
 
     Generator gen(numItems);
 
     if (binominalParameter > 0)
+    {
         gen.setBinominalParameter(binominalParameter);
+    }
 
     if (capacity > 0)
+    {
         gen.setCapacity(capacity);
+    }
 
     if (maxDuplicates == 0)
-        maxDuplicates = gen.getMaxDuplciates();
-
-
+    {
+        maxDuplicates = gen.getMaxDuplicates();
+    }
 
     std::vector<Item> items = gen.generate();
 
-    Knapsack knap(gen.getCapacity(), maxDuplicates);
-    knap.fromVector(items);
-    knap.calculateKnapsack();
+    Knapsack knapsack(gen.getCapacity(), maxDuplicates);
+    knapsack.fromVector(items);
+    knapsack.calculateKnapsack(naive);
 
-    std::cout << knap.getResultValue() << std::endl;
+    std::cout << knapsack.getResultValue() << std::endl;
 
-    for (Item &item : knap.getResultKnapsack())
+    for (Item &item : knapsack.getResultKnapsack())
     {
         std::cout << item << std::endl;
     }
 }
 
-void m3Mode()
+void m3Mode(bool naive)
 {
     Benchmark benchmark;
     benchmark.setNumProblems(10);
@@ -82,37 +82,58 @@ void m3Mode()
     benchmark.setStartNumItems(1000);
     benchmark.setCapacity(10000);
     benchmark.setMaxDuplicates(100000);
-
-    benchmark.run();
+    benchmark.run(naive);
 }
 
 int main(int argc, char *argv[])
 {
-    
-    if (argc < 2)
+    if (argc != 3)
     {
-        std::cout << "Nie wybrano trybu uruchomienia." << std::endl;
+        std::cout << "usage:" << std::endl;
+        std::cout << "    ./main mode algorithm" << std::endl;
+        std::cout << "mode:" << std::endl;
+        std::cout << "    -m1   manual" << std::endl;
+        std::cout << "    -m2   automated" << std::endl;
+        std::cout << "    -m3   benchmark" << std::endl;
+        std::cout << "algorithm:" << std::endl;
+        std::cout << "    -a1   naive" << std::endl;
+        std::cout << "    -a2   optimal" << std::endl;
+        return 1;
+    }
+
+    bool naive;
+
+    if (argv[2] == std::string("-a1"))
+    {
+        naive = true;
+    }
+    else if (argv[2] == std::string("-a2"))
+    {
+        naive = false;
+    }
+    else
+    {
+        std::cout << "Invalid algorithm." << std::endl;
         return 1;
     }
 
     if (argv[1] == std::string("-m1"))
     {
-        m1Mode();
+        m1Mode(naive);
     }
     else if (argv[1] == std::string("-m2"))
     {
-        m2Mode();
+        m2Mode(naive);
     }
     else if (argv[1] == std::string("-m3"))
     {
-        m3Mode();
+        m3Mode(naive);
     }
     else
     {
-        std::cout << "Wybrano nieistniejacy tryb uruchomienia." << std::endl;
+        std::cout << "Invalid mode." << std::endl;
         return 1;
     }
-    
 
     return 0;
 }

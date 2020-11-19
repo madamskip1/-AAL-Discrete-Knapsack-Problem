@@ -1,4 +1,5 @@
 #include "Generator.hpp"
+
 const float Generator::DEFAULT_BINOMINAL_PARAMETER = 0.1;
 
 Generator::Generator(int numItems)
@@ -14,7 +15,7 @@ int Generator::getCapacity()
     return capacity;
 }
 
-int Generator::getMaxDuplciates()
+int Generator::getMaxDuplicates()
 {
     return maxDuplicates;
 }
@@ -33,14 +34,13 @@ std::vector<Item> Generator::generate()
 {
     std::vector<Item> items;
     int volume, value;
+
     std::random_device randomDevice;
     std::mt19937 gen(randomDevice());
-
-    // Rozk³ad normalny wagi przedmiotów, domyœlnie 10% maksymalnej pojemnoœci
     std::binomial_distribution<> volumeDistribution(capacity, binominalParameter);
     std::binomial_distribution<> valueDistribution(itemMaxValue, binominalParameterValueDistr);
 
-    for (int i = 0; i < numItems; i++)
+    for (int i = 0; i < numItems; ++i)
     {
         volume = volumeDistribution(gen);
         value = valueDistribution(gen);
@@ -64,8 +64,6 @@ void Generator::calcCapacity()
 {
     std::random_device randomDevice;
     std::mt19937 gen(randomDevice());
-
-    // Parametr 0.5 rozk³adu sprawi, ¿e pojemnoœæ bêdzie œrednio 2 razy wiêksza ni¿ iloœæ przedmiotów
     std::binomial_distribution<> capacityDistribution(numItems, 0.5);
 
     capacity = capacityDistribution(gen);

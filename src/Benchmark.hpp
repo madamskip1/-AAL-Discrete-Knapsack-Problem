@@ -1,12 +1,14 @@
 #pragma once
+
+#include <chrono>
 #include <iostream>
 #include <vector>
-#include <chrono>
+
 class Benchmark
 {
 public:
     Benchmark();
-    void run();
+    void run(bool naive);
     void setStartNumItems(int start);
     void setCapacity(int capacity);
     void setNumProblems(int problems);
@@ -28,10 +30,8 @@ private:
     static const int DEFAULT_NUM_INSTANCES;
     static const int DEFAULT_STEP;
     static const int DEFAULT_NUM_PROBLEMS;
-   
-    void runInstance();
+
+    void runInstance(bool naive);
     void printInstance();
     void printProblem();
-
-
 };

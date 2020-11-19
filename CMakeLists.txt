@@ -33,4 +33,5 @@ macro(add_unit_test testname)
 endmacro(add_unit_test)
 
 add_unit_test(KnapsackTest)
+add_unit_test(NaiveKnapsackTest)
 add_unit_test(ItemTest)
