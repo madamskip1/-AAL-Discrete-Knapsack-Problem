@@ -55,6 +55,28 @@ int Knapsack::naiveKnapsack(std::vector<Item> toProcess, std::vector<Item> curre
             bestVal = val;
             bestItems = current;
         }
+        else if (val == bestVal)
+        {
+            // if same value, then minimize weight
+            int temp = 0;
+            for (auto x : bestItems)
+            {
+                temp += x.volume;
+            }
+
+            if (vol < temp)
+            {
+                bestItems = current;
+            }
+            else if (vol == temp)
+            {
+                // if same value and weight, then minimize count
+                if (current.size() < bestItems.size())
+                {
+                    bestItems = current;
+                }
+            }
+        }
 
         return bestVal;
     }
