@@ -76,7 +76,7 @@ void m2Mode(bool naive)
 void m3Mode(bool naive)
 {
     Benchmark benchmark;
-    benchmark.setNumProblems(10);
+    benchmark.setNumProblems(100);
     benchmark.setStep(1000);
     benchmark.setNumInstances(10);
     benchmark.setStartNumItems(1000);

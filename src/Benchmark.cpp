@@ -1,6 +1,8 @@
 #include "Benchmark.hpp"
 
 #include <chrono>
+#include <fstream>
+#include <string>
 
 #include "Generator.hpp"
 #include "Knapsack.hpp"
@@ -103,11 +105,23 @@ void Benchmark::run(bool naive)
         numItems = startNumItems + problem * step;
         std::cout << "Nowy problem. Ilosc przedmiotow: " << numItems << std::endl;
 
+        std::ofstream logFile(std::to_string(numItems) + ".txt");
+
+        if (!logFile.is_open())
+        {
+            std::cout << "Failed to create log file." << std::endl;
+            throw;
+        }
+
         for (int instance = 0; instance < numInstances; instance++)
         {
             runInstance(naive);
             printInstance();
+
+            logFile << times.back().count() << std::endl;
         }
+
+        logFile.close();
 
         printProblem();
     }
