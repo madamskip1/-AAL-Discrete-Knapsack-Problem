@@ -77,9 +77,9 @@ void m3Mode(bool naive)
 {
     Benchmark benchmark;
     benchmark.setNumProblems(100);
-    benchmark.setStep(1000);
+    benchmark.setStep(1);
     benchmark.setNumInstances(10);
-    benchmark.setStartNumItems(1000);
+    benchmark.setStartNumItems(1);
     benchmark.setCapacity(10000);
     benchmark.setMaxDuplicates(100000);
     benchmark.run(naive);
