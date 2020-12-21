@@ -20,7 +20,6 @@ void m1Mode(bool naive)
         knapsack.addItem(volume, value);
     }
 
-    // TODO: choose which algorithm to use (optimal or naive)
     knapsack.calculateKnapsack(naive);
 
     std::cout << knapsack.getResultValue() << std::endl;
