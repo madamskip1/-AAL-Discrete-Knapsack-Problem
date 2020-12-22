@@ -88,9 +88,9 @@ int Knapsack::naiveKnapsack(std::vector<Item> toProcess, std::vector<Item> curre
         // Path A: add the item
         current.push_back(item);
         bestVal = naiveKnapsack(toProcess, current, vol + item.volume, val + item.value, bestVal, bestItems);
-        current.pop_back();
 
         // Path B: skip the item
+        current.pop_back();
         bestVal = naiveKnapsack(toProcess, current, vol, val, bestVal, bestItems);
     }
 
